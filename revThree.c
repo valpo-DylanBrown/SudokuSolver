@@ -1,10 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-
+#include <unistd.h>
+//rows 2, 5, 8 not safe
 //begin definitions
 #define SIZE 9 //size of numbers/rows/cols
 #define RESET 0 //reset to zero
+#define FILENAME "puzzle.txt"
 //end definitions
 
 //begin function definitions
@@ -14,8 +16,10 @@ int isSafe();
 void printPuzzle();
 //end functions definitions
 //begin global vars
-int row, col;
+int row, col = 0;
 long int totalNum = 0;
+int puzzle[SIZE][SIZE];
+
 /*
 -------------------------------------------
   YOU MAY CHANGE THE SECTION BELOW
@@ -25,7 +29,7 @@ long int totalNum = 0;
   (this is subject to change)
 -------------------------------------------
 */
-int puzzle[9][9] = {
+/*int puzzle[9][9] = {
   {8,0,0,0,0,0,1,0,6},
   {0,0,0,0,0,1,0,5,2},
   {0,0,0,0,5,0,0,9,0},
@@ -36,15 +40,46 @@ int puzzle[9][9] = {
   {9,3,0,1,0,0,0,0,0},
   {4,0,5,0,0,0,0,0,3}
 
-};
+};*/
 //end global vars
 
 int main(){ //begin main
+  int r, c;
+  FILE *fr;
+
+  fr = fopen(FILENAME, "r");
+  if (fr == NULL){
+    printf("Error, can not open %s.\n", FILENAME);
+    exit(EXIT_FAILURE);
+  }
+
+  for (r=0; r<SIZE; r++){
+    for(c=0; c<SIZE; c++){
+      fscanf(fr, "%d", &puzzle[r][c]);
+    }
+  }
+/*
+  for (r=0; r<SIZE; r++){
+    for(c=0; c<SIZE; c++){
+      printf("%d", puzzle[r][c]);
+    }
+    printf("\n");
+  }
+  */
   int solution = 0; //var used to solve
+  int change;
   int solve; //variable to ask users if they wish to solve
   double spentTime = 0.0;
   printf("The current puzzle is: \n\n");
   printPuzzle(); //print current puzzle out
+  printf("Would you like to make changes to the puzzle (1 for YES, 2 for NO)? ");
+  scanf("%d", &change);
+  if(change==1){
+    system("open puzzle.txt");
+    printf("Please save and close the puzzle window!\n");
+    printf("Please restart the program to update me!\n");
+    exit(0);
+  }
   printf("Would you like me to solve (1 for YES, 2 for NO)? ");
   scanf("%d", &solve); //scans if users wish to solve
   clock_t begin = clock();
@@ -55,7 +90,7 @@ int main(){ //begin main
     printPuzzle(); //print the solved puzzle
   }
   else{ //if the solution does not exist
-    printf("There is no solution to this puzzle. Sorry!"); //print DNE
+    printf("There is no solution to this puzzle. Sorry!\n"); //print DNE
   }
   }
   else if (solve == 2){ //if users do not wish to sove
@@ -68,7 +103,7 @@ int main(){ //begin main
   clock_t end = clock();
   spentTime += (double) (end - begin) / CLOCKS_PER_SEC;
   if (solve == 1){
-  printf("It took me %.5f milliseconds to complete the puzzle.",spentTime*1000);
+  printf("It took me %.5f milliseconds to complete the puzzle.\n",spentTime*1000);
 }
   printf("Thank you, goodbye!\n"); //thanks users
   return 0;
@@ -133,6 +168,7 @@ int isSafe(int r, int c, int n){
   //break into 3x3
   beginRow = (r/3)*3;
   beginCol = (c/3)*3;
+  //printf("BeginRow: %d, BeginCol: %d\n", beginRow, beginCol);
 
   for (j=0; j<SIZE; j++){ //check the row
     if(puzzle[r][j] == n){ //if the cell has the same value as another
