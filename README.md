@@ -9,4 +9,4 @@ Users should submit a Sudoku puzzle in the file named "Puzzle.txt". There are ex
 
 # Author
 Dylan Brown - Initial Work - Valparaiso University
-See also the list of [contributors](contributors.md) who participated in this project. 
+See also the list of [contributors](CONTRIBUTORS.md) who participated in this project.
