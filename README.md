@@ -8,7 +8,7 @@ Users should have C command tools installed before executing this program. For w
 Users should submit a Sudoku puzzle in the file named "Puzzle.txt". There are example puzzles in the folder "Puzzles". Users must input blank spaces as '0' and input a space or tab in between the numbers. Users should then follow the window in order to solve their puzzle.
 
 # Version
-Beta Version 3.0
+Beta Version 1.3
 
 # Author
 
