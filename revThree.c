@@ -2,96 +2,87 @@
 #include <stdlib.h>
 #include <time.h>
 #include <unistd.h>
-//rows 2, 5, 8 not safe
+/* THINGS TO ADD
+
+
+*/
+
 //begin definitions
+//var definitions
 #define SIZE 9 //size of numbers/rows/cols
 #define RESET 0 //reset to zero
 #define FILENAME "puzzle.txt"
-//end definitions
 
-//begin function definitions
+//function definitions
 int solvePuzzle();
 int findEmpty();
 int isSafe();
 void printPuzzle();
-//end functions definitions
-//begin global vars
+
+//global vars
 int row, col = 0;
 long int totalNum = 0;
 int puzzle[SIZE][SIZE];
 
-/*
--------------------------------------------
-  YOU MAY CHANGE THE SECTION BELOW
-  "PUZZLE" IS THE SUDOKU PUZZLE
-  ENTER LINE BY LINE
-  ENTER BLANKS AS ZERO
-  (this is subject to change)
--------------------------------------------
+//end definitions
+
+/* This function asks users if they wish to change the file before solving.
+   It then asks if the user wishes to solve the current puzzle after review.
+   Then, it runs the functions below it to solve the puzzle
 */
-/*int puzzle[9][9] = {
-  {8,0,0,0,0,0,1,0,6},
-  {0,0,0,0,0,1,0,5,2},
-  {0,0,0,0,5,0,0,9,0},
-  {0,1,3,0,8,0,0,0,9},
-  {0,0,0,9,0,3,0,0,0},
-  {6,0,0,0,4,0,3,2,0},
-  {0,8,0,0,7,0,0,0,0},
-  {9,3,0,1,0,0,0,0,0},
-  {4,0,5,0,0,0,0,0,3}
+int main(){
 
-};*/
-//end global vars
+  //begin vars
+  int r, c; //rows / columns
+  FILE *fr; //file read
+  int solution = 0; //var used to solve
+  int change; //var to change puzzle
+  int solve; //variable to ask users if they wish to solve
+  double spentTime = 0.0; //var for time spent, used for debug
+  //end vars
 
-int main(){ //begin main
-  int r, c;
-  FILE *fr;
-
+  //open file
   fr = fopen(FILENAME, "r");
   if (fr == NULL){
     printf("Error, can not open %s.\n", FILENAME);
     exit(EXIT_FAILURE);
   }
-
   for (r=0; r<SIZE; r++){
     for(c=0; c<SIZE; c++){
       fscanf(fr, "%d", &puzzle[r][c]);
     }
   }
-/*
-  for (r=0; r<SIZE; r++){
-    for(c=0; c<SIZE; c++){
-      printf("%d", puzzle[r][c]);
-    }
-    printf("\n");
-  }
-  */
-  int solution = 0; //var used to solve
-  int change;
-  int solve; //variable to ask users if they wish to solve
-  double spentTime = 0.0;
+  fclose(fr);
+  //close file
+
   printf("The current puzzle is: \n\n");
   printPuzzle(); //print current puzzle out
   printf("Would you like to make changes to the puzzle (1 for YES, 2 for NO)? ");
-  scanf("%d", &change);
-  if(change==1){
-    system("open puzzle.txt");
+  scanf("%d", &change); //store input
+  if(change==1){ //do users wish to change?
+    system("open puzzle.txt"); //opens the puzzle document
     printf("Please save and close the puzzle window!\n");
     printf("Please restart the program to update me!\n");
-    exit(0);
+    exit(0); //exits program
+  }
+  else if(change == 2){ //
+    printf("No changes made! \n");
+  }
+  else{
+    printf("Please enter a valid choice. ");
   }
   printf("Would you like me to solve (1 for YES, 2 for NO)? ");
   scanf("%d", &solve); //scans if users wish to solve
-  clock_t begin = clock();
+  clock_t begin = clock(); //begin clock, used to time completion
   if(solve == 1){ //if yes
-  solution = solvePuzzle(); //solve puzzle using function solvePuzzle
-  if(solution){ // if solution exists
-    printf("The solution to this puzzle is: \n\n");
-    printPuzzle(); //print the solved puzzle
-  }
-  else{ //if the solution does not exist
-    printf("There is no solution to this puzzle. Sorry!\n"); //print DNE
-  }
+    solution = solvePuzzle(); //solve puzzle using function solvePuzzle
+    if(solution){ // if solution exists
+      printf("The solution to this puzzle is: \n\n");
+      printPuzzle(); //print the solved puzzle
+    }
+    else{ //if the solution does not exist
+      printf("There is no solution to this puzzle. Sorry!\n"); //print DNE
+    }
   }
   else if (solve == 2){ //if users do not wish to sove
     printf("No problem, you may change the puzzle in");
