@@ -3,8 +3,9 @@
 #include <time.h>
 #include <unistd.h>
 /* THINGS TO ADD
-
-
+More Puzzles
+More user friendly
+Scan for new files?
 */
 
 //begin definitions
@@ -12,6 +13,8 @@
 #define SIZE 9 //size of numbers/rows/cols
 #define RESET 0 //reset to zero
 #define FILENAME "puzzle.txt"
+#define ANSI_RED "\x1b[31m"
+#define ANSI_RESET "\x1b[0m"
 
 //function definitions
 int solvePuzzle();
@@ -23,6 +26,8 @@ void printPuzzle();
 int row, col = 0;
 long int totalNum = 0;
 int puzzle[SIZE][SIZE];
+int originalNums;
+int operatingSystem = 0; //1 for windows, otherwise mac
 
 //end definitions
 
@@ -60,7 +65,12 @@ int main(){
   printf("Would you like to make changes to the puzzle (1 for YES, 2 for NO)? ");
   scanf("%d", &change); //store input
   if(change==1){ //do users wish to change?
-    system("open puzzle.txt"); //opens the puzzle document
+    if(operatingSystem == 1){
+      system("start puzzle.txt");//opens the puzzle document
+    }
+    else{
+      system("open puzzle.txt"); //opens the puzzle document
+    }
     printf("Please save and close the puzzle window!\n");
     printf("Please restart the program to update me!\n");
     exit(0); //exits program
