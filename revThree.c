@@ -3,9 +3,8 @@
 #include <time.h>
 #include <unistd.h>
 /* THINGS TO ADD
-More Puzzles
-More user friendly
-Scan for new files?
+Make original nums stand out
+Improve speeds
 */
 
 //begin definitions
